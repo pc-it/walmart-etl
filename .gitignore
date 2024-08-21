@@ -146,6 +146,7 @@ alembic_dev/
 *.json
 *.csv
 *.txt
+!requirements.txt
 *.pickle
 .migration_env
 .env_prod
