@@ -1,4 +1,5 @@
 import sys
+import time
 from loguru import logger
 
 from src.etl.recon_report_v1 import WalmartReconReportV1ETL, CONFIG
@@ -22,4 +23,9 @@ def main():
 
 
 if __name__ == '__main__':
+    start = time.perf_counter()
+    logger.info('Start script.')
     main()
+    end = time.perf_counter()
+    duration = end - start
+    logger.info(f'Finish script. Duration: {duration}')
