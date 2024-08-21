@@ -60,7 +60,11 @@ class WalmartBaseAPI:
                     next_offset = response.json().get('nextOffset', None)
                     self.last_page = next_offset is None or next_offset == -1
 
-                    yield response
+                    retry_request = yield response
+
+                    if retry_request:
+                        logger.debug(f'{obj.__class__.__name__} - Receive retry request. Send again.')
+                        continue
 
                     if self.last_page:
                         logger.debug(f'{obj.__class__.__name__} - Last page.')

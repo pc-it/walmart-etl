@@ -18,7 +18,7 @@ logger.configure(handlers=[handler])
 
 def main():
     etl = WalmartReconReportV1ETL(config=CONFIG)
-    etl.run_available_dates()
+    etl.run_available_dates(dates_limit=1)
 
 
 if __name__ == '__main__':

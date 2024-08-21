@@ -1,3 +1,5 @@
+import time
+from loguru import logger
 from datetime import datetime
 from typing import Dict, List
 
@@ -26,11 +28,33 @@ class WalmartReconReportJsonV1Extractor(AbstractExtractor):
             'noOfRecords': 1000
         }
         result = []
-        for page in self.api.recon_report_json(params=params):
+        recon_report = self.api.recon_report_json
+        recon_report_generator = recon_report(params=params)
+        retry = None
+        try_count = 0
+
+        while True:
+            page = recon_report_generator.send(retry)
+
             page_data = page.json()
             report_data = page_data.get('reportData')
+
             if report_data is None:
-                print(page_data)
-                raise ValueError
-            result.extend(page.json()['reportData'])
+
+                if try_count > 5:
+                    logger.warning('Too many retries. Stop.')
+                    raise OSError('Too many retries')
+
+                logger.warning(f'{self} - Issue with request {page_data}. Sleep and try again.')
+
+                try_count += 1
+                time.sleep(10)
+                retry = True
+                continue
+
+            result.extend(report_data)
+
+            if recon_report.last_page:
+                break
+
         return result

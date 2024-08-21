@@ -1,5 +1,3 @@
-import time
-
 from loguru import logger
 from datetime import datetime
 from typing import List, Dict, Tuple
@@ -74,8 +72,5 @@ class WalmartReconReportV1ETL(BaseETL):
 
     def run_available_dates(self, dates_limit=200):
         dates = self.extractor.available_dates()
-        dates = dates[-dates_limit:]
-        dates = [each for each in dates if each >= datetime(year=2023, month=3, day=28)]
-        for _date in dates:
+        for _date in dates[-dates_limit:]:
             self.run(report_date=_date)
-            time.sleep(5)
