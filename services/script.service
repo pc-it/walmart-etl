@@ -1,0 +1,14 @@
+[Unit]
+Description=TikTokShop ETL.
+
+[Service]
+ExecStart=/bin/bash -c '${VENV_PATH}/bin/python3.8 ${PROJECT_DIR}/main.py'
+EnvironmentFile=/etc/systemd/{{ envfile }}
+RuntimeMaxSec=10800
+User=it
+Group=it
+LimitNOFILE=1200000
+LimitNOFILESoft=1200000
+
+[Install]
+WantedBy=multi-user.target

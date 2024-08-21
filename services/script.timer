@@ -1,0 +1,13 @@
+[Unit]
+Description=Run Walmart ETL periodically.
+Requires={{ requires }}
+
+[Timer]
+Unit={{ requires }}
+OnCalendar=*-*-* 01:20:00 America/Denver
+OnCalendar=*-*-* 05:20:00 America/Denver
+RandomizedDelaySec=120s
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target
